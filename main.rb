@@ -12,6 +12,7 @@ def random_unique_number(arr)
 end
 
 my_arr = Array.new(rand(1..15)) { rand(1..100) }.uniq.sort
+root_value = my_arr[(my_arr.size-1)/2]
 p "creating Balanced BST with array #{my_arr}..."
 tree = Tree.new(my_arr)
 
@@ -23,6 +24,10 @@ tree.pretty_print
 existing_num = my_arr[rand(0..my_arr.size-1)]
 p "Finding #{existing_num}"
 p tree.find(existing_num)
+p "Deleting #{existing_num}"
+tree.delete(existing_num)
+tree.pretty_print
+
 
 nonexisting_num = random_unique_number(my_arr)
 p "Finding #{nonexisting_num}"

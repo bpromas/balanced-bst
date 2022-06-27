@@ -7,4 +7,8 @@ class Node
         @left = left
         @right = right
     end
+
+    def is_leaf?
+        return self.right.nil? && self.left.nil?
+    end
 end
