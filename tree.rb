@@ -129,6 +129,41 @@ class Tree
         end
     end
 
+    def height(node = @root)
+        return 0 if node.is_leaf?
+        node = find(node) if node.is_a?(Integer)
+
+        left_height = node.left.nil? ? -1 : height(node.left)
+        right_height = node.right.nil? ? -1 : height(node.right)
+
+        return left_height > right_height ? left_height+1 : right_height+1
+    end
+
+    def depth(value, depth = 0, node = @root)
+        return depth if node.value == value
+
+        if value < node.value
+            node = depth(value, depth+1, node.left) unless node.left.nil?
+        else
+            node = depth(value, depth+1, node.right) unless node.right.nil?
+        end
+    end
+
+    def balanced?(node = @root)
+        left_balanced = node.left.nil? ? true : balanced?(node.left)
+        right_balanced = node.right.nil? ? true : balanced?(node.right)
+        
+        left_height = node.left.nil? ? -1 : height(node.left)
+        right_height = node.right.nil? ? -1 : height(node.right)
+
+        return ((left_height - right_height).abs <= 1) && (left_balanced && right_balanced)
+    end
+
+    def rebalance
+        sorted_nodes = self.inorder
+        @root = build_tree(sorted_nodes, 0, sorted_nodes.size-1)
+    end
+
     def find_minimum(node)
         until node.left.nil?
             node = node.left
@@ -142,7 +177,6 @@ class Tree
         end
         return node
     end
-
 
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
