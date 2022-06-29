@@ -28,8 +28,27 @@ p "Deleting #{existing_num}"
 tree.delete(existing_num)
 tree.pretty_print
 
+p "level order:"
+p tree.level_order_recursive
+order2 = []
+tree.level_order_recursive { |node| order2 << node.value * 2}
+p order2
 
-nonexisting_num = random_unique_number(my_arr)
-p "Finding #{nonexisting_num}"
-p tree.find(nonexisting_num)
+p "inorder:"
+p tree.inorder
+order2 = []
+tree.inorder { |node| order2 << node.value * 2}
+p order2
+
+p "preorder:"
+p tree.preorder
+order2 = []
+tree.preorder { |node| order2 << node.value * 2}
+p order2
+
+p "postorder:"
+p tree.postorder
+order2 = []
+tree.postorder { |node| order2 << node.value * 2}
+p order2
 

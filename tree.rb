@@ -31,7 +31,7 @@ class Tree
         return node
     end
 
-    # TO-DO fix deletions of the root node when root node has one child
+    # TO-DO fix deletions of the root node when root node has only one child
     def delete(value, node = @root)
         return if node == nil
 
@@ -70,6 +70,63 @@ class Tree
             node = find(value, node.right)
         end
         return node
+    end
+
+    def level_order
+        return if @root.nil?
+        queue = []
+        result = []
+        queue.push(@root)
+        until queue.size == 0
+            node = queue.shift #dequeue
+            result << node.value
+            queue.push(node.left) unless node.left.nil?
+            queue.push(node.right) unless node.right.nil?
+            yield(node) if block_given?
+        end
+
+        return result unless block_given?
+    end
+
+    def level_order_recursive(queue = [@root], result = [], &block)
+        return if queue.size == 0
+        node = queue.shift
+        yield(node) if block_given?
+        result << node.value unless block_given?
+        queue.push(node.left) unless node.left.nil?
+        queue.push(node.right) unless node.right.nil?
+        level_order_recursive(queue, result, &block)
+        return result unless block_given?
+    end
+
+    #LNR
+    def inorder(node = @root, result = [], &block)
+        inorder(node.left, result, &block) unless node.left.nil?
+        result << node.value
+        yield(node) if block_given?
+        inorder(node.right, result, &block) unless node.right.nil?
+        return result unless block_given?
+    end
+
+    #NLR
+    def preorder(node = @root, result = [], &block)
+        result << node.value
+        yield(node) if block_given?
+        preorder(node.left, result, &block) unless node.left.nil?
+        preorder(node.right, result, &block) unless node.right.nil?
+        return result unless block_given?
+    end
+
+    #LRN
+    def postorder(node = @root, result = [], &block)
+        postorder(node.left, result, &block) unless node.left.nil?
+        postorder(node.right, result, &block) unless node.right.nil?
+        result << node.value
+        if block_given?
+            yield(node) 
+        else
+            return result unless block_given?
+        end
     end
 
     def find_minimum(node)
