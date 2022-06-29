@@ -1,3 +1,5 @@
+# balanced-bst
+
 This repository was created as part of The Odin Project's curriculum.
 
 This was part of my study on data structures, where I created a balanced binary search tree, alongside many methods for manipulating and traversing the tree.
